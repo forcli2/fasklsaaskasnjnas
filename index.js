@@ -5,6 +5,7 @@ const socketIO = require('socket.io');
 const https = require('https');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 // import QRCode from 'qrcode';
+const app = express();
 const fs = require('fs');
 const path = require('path');
 const client = new Client({
@@ -139,7 +140,7 @@ const options = {
 };
 
 const PORT = process.env.PORT || 3000;
-const server = https.createServer(options);
+const server = https.createServer(options, app);
 const io = new socketIO.Server(server);
 
 io.on('connection', (socket) => {
@@ -160,10 +161,11 @@ io.on('connection', (socket) => {
     });
 });
 
+app.get('/health', (req, res) => {
+    res.status(200).send('Servidor Socket.IO está saudável');
+});
+
 server.listen(PORT, () => {
     console.log(`Servidor Socket.IO rodando na porta ${PORT}`);
 });
 
-app.get('/health', (req, res) => {
-    res.status(200).send('Servidor Socket.IO está saudável');
-});
