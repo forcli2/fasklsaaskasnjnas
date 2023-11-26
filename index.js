@@ -5,7 +5,8 @@ const socketIO = require('socket.io');
 const https = require('https');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 // import QRCode from 'qrcode';
-
+const fs = require('fs');
+const path = require('path');
 const client = new Client({
     puppeteer: {
         headless: false,
