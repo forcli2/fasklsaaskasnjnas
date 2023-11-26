@@ -163,3 +163,7 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
     console.log(`Servidor Socket.IO rodando na porta ${PORT}`);
 });
+
+app.get('/health', (req, res) => {
+    res.status(200).send('Servidor Socket.IO está saudável');
+});
