@@ -2,7 +2,7 @@ const qrcode = require('qrcode-terminal');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
-
+const https = require('https');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 // import QRCode from 'qrcode';
 
@@ -129,13 +129,20 @@ sendMessage = () => {
 }
 
 
-const app = express();
-const server = http.createServer(app);
-const io = new socketIO.Server(server);
+
+
+
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'certificado.key')), // Carregue sua chave privada
+    cert: fs.readFileSync(path.join(__dirname, 'certificado.pem')), // Carregue seu certificado
+};
 
 const PORT = process.env.PORT || 3000;
+const server = https.createServer(options);
+const io = new socketIO.Server(server);
 
 io.on('connection', (socket) => {
+
     console.log('Novo cliente conectado');
 
     // Evento ao receber uma mensagem do cliente
